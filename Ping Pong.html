@@ -11,6 +11,7 @@
         margin: 0;
         padding: 0;
       }
+      
     </style>
   </head>
   <body>
@@ -26,8 +27,14 @@
         w: window.innerWidth,
         h: window.innerHeight,
         draw: function () {
-          canvasCtx.fillStyle = "#286047"
+          canvasCtx.fillStyle = "#006600"
           canvasCtx.fillRect(0, 0, this.w, this.h)
+          canvasCtx.strokeStyle = "#ffffff";
+          canvasCtx.lineWidth = 15;
+          canvasCtx.beginPath();
+          canvasCtx.arc(field.w / 2, field.h / 2, Math.min(field.w, field.h) / 2 - 300, 0, 2 * Math.PI);
+          canvasCtx.stroke();
+
         },
       }
 
@@ -85,7 +92,7 @@
           canvasCtx.font = "bold 72px Arial"
           canvasCtx.textAlign = "center"
           canvasCtx.textBaseline = "top"
-          canvasCtx.fillStyle = "#01341D"
+          canvasCtx.fillStyle = "#ffffff"
           canvasCtx.fillText(this.human, field.w / 4, 50)
           canvasCtx.fillText(this.computer, field.w / 4 + field.w / 2, 50)
         },
@@ -99,55 +106,52 @@
         directionX: 1,
         directionY: 1,
         _calcPosition: function () {
-          // verifica se o jogador 1 fez um ponto (x > largura do campo)
+          
           if (this.x > field.w - this.r - rightPaddle.w - gapX) {
-            // verifica se a raquete direita está na posição y da bola
+            
             if (
               this.y + this.r > rightPaddle.y &&
               this.y - this.r < rightPaddle.y + rightPaddle.h
             ) {
-              // rebate a bola intervertendo o sinal de X
+        
               this._reverseX()
             } else {
-              // pontuar o jogador 1
+              
               score.increaseHuman()
               this._pointUp()
             }
           }
 
-          // verifica se o jogador 2 fez um ponto (x < 0)
+          
           if (this.x < this.r + leftPaddle.w + gapX) {
-            // verifica se a raquete esquerda está na posição y da bola
+           
             if (
               this.y + this.r > leftPaddle.y &&
               this.y - this.r < leftPaddle.y + leftPaddle.h
             ) {
-              // rebate a bola intervertendo o sinal de X
+              
               this._reverseX()
             } else {
-              // pontuar o jogador 2
+              
               score.increaseComputer()
               this._pointUp()
             }
           }
 
-          // verifica as laterais superior e inferior do campo
           if (
             (this.y - this.r < 0 && this.directionY < 0) ||
             (this.y > field.h - this.r && this.directionY > 0)
           ) {
-            // rebate a bola invertendo o sinal do eixo Y
+        
             this._reverseY()
           }
         },
         _reverseX: function () {
-          // 1 * -1 = -1
-          // -1 * -1 = 1
+        
           this.directionX *= -1
         },
         _reverseY: function () {
-          // 1 * -1 = -1
-          // -1 * -1 = 1
+         
           this.directionY *= -1
         },
         _pointUp: function () {
